@@ -6,9 +6,9 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Register') }}</div>
-555555
+
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}" aria-label="{{ __('Register') }}">
+                    <form method="POST" action="{{ route('register') }}" aria-label="{{ __('Register') }}" novalidate>
                         @csrf
 
                         <div class="form-group row">
@@ -60,6 +60,98 @@
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                             </div>
                         </div>
+
+                        {{--Champs complementaires--}}
+                        <div class="form-group row">
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('First name') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="name" type="text" class="form-control{{ $errors->has('firstName') ? ' is-invalid' : '' }}" name="firstName" value="{{ old('firstName') }}" required autofocus>
+
+                                @if ($errors->has('firstName'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('firstName') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Last name') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="name" type="text" class="form-control{{ $errors->has('lastName') ? ' is-invalid' : '' }}" name="lastName" value="{{ old('lastName') }}" required autofocus>
+
+                                @if ($errors->has('lastName'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('lastName') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Mobile') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="name" type="text" class="form-control{{ $errors->has('mobile') ? ' is-invalid' : '' }}" name="mobile" value="{{ old('mobile') }}" required autofocus>
+
+                                @if ($errors->has('mobile'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('mobile') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Birthday') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="name" type="date" class="form-control{{ $errors->has('birthday') ? ' is-invalid' : '' }}" name="birthday" value="{{ old('birthday') }}" required autofocus>
+
+                                @if ($errors->has('birthday'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('birthday') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Gender') }}</label>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="gender1" name="gender" class="custom-control-input{{ $errors->has('gender') ? ' is-invalid' : '' }}" value="male">
+                                <label class="custom-control-label" for="gender1">Male</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="gender2" name="gender" class="custom-control-input{{ $errors->has('gender') ? ' is-invalid' : '' }}" value="female">
+                                <label class="custom-control-label" for="gender2">Female</label>
+                            </div>
+                            @if ($errors->has('gender'))
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('gender') }}</strong>
+                                    </span>
+                            @endif
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Activation') }}</label>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="activation1" name="activation" class="custom-control-input{{ $errors->has('activation') ? ' is-invalid' : '' }}" value="1">
+                                <label class="custom-control-label" for="activation1">Yes</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="activation2" name="activation" class="custom-control-input{{ $errors->has('activation') ? ' is-invalid' : '' }}" value="0">
+                                <label class="custom-control-label" for="activation2">No</label>
+                            </div>
+                            @if ($errors->has('activation'))
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('activation') }}</strong>
+                                    </span>
+                            @endif
+                        </div>
+
+                        {{--***********************************************************--}}
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">

@@ -13,7 +13,7 @@ use App\http\Requests;
 class PostController extends Controller
 {
     public function index(){
-        $posts = Posts::paginate(4);
+        $posts = Posts::latest()->paginate(5);
 
         return view('post.index',compact('posts'));
         //return View::make('post.index', array('posts' => $posts));

@@ -19,8 +19,27 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('post','PostController@index');
-Route::get('post/{id?}', 'PostController@show');
-Route::post('addPost','PostController@addPost');
-Route::post('editPost','PostController@editPost');
-Route::post('deletePost','PostController@deletePost');
+/*
+Route::middleware('admin')->group(function () {
+
+
+
+}*/
+
+
+Route::get('/users', 'UserController@index')->name('index');
+
+Route::post('/user/store', [
+    'uses' => 'UserController@store',
+    'as' => 'store'
+]);
+
+/*Route::patch('/user/{id}/update', [
+    'uses' => 'UserController@postUpdateTask',
+    'as' => 'task.update'
+]);*/
+
+Route::delete('/user/{id}/destroy', [
+    'uses' => 'UserController@destroy',
+    'as' => 'delete'
+]);

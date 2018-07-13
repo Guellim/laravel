@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Repositories\UserRepository;
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Mail\Welcome;
 
 class RegisterController extends Controller
 {
@@ -52,21 +54,26 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
+            'firstName' => 'required|string',
+            'lastName' => 'required|string',
+            'mobile' => 'required|numeric|min:6',
+            'birthday' => 'required|date',
+            'gender' => 'required|in:male,female',
+            'activation' => 'boolean',
         ]);
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
+
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        $user = new User();
+        $user->fill($data);
+        //dd($user);
+        //dd($user->getAttribute('password'));
+        $password = $user->getAttribute('password');
+        \Mail::to($user)->send(new Welcome($password));
+
+        $repository = new UserRepository($user);
+        return $repository->create($data);
     }
 }
