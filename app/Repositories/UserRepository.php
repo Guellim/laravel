@@ -16,10 +16,24 @@ class UserRepository
         $this->model = $model;
     }
 
-    public function getAll()
+    public function getAll($columns)
     {
-        return $this->model->all();
-    }
+        $draw = $columns['draw'];
+        $start = $columns['start'];
+        $length = $columns['length'];
+        $page=$start/$length+1;
+
+        $users=$this->model->paginate($length, ['*'], 'pages', $page);
+
+        $response=[
+            'draw'=>$draw,
+            "recordsTotal"=>$users->total(),
+            "recordsFiltered"=>$users->total(),
+            "data"=>$users->items(),
+        ];
+
+        return $response;
+        }
 
     public function getById($id)
     {
@@ -31,7 +45,7 @@ class UserRepository
         return $this->model->where($att, $column);
     }
 
-    public function create(array $input)
+    public function create($input)
     {
         $user = new $this->model;
         $user->email = $input['email'];
@@ -47,7 +61,7 @@ class UserRepository
         return $user;
     }
 
-    public function createOrUpdate(array $input )
+    public function createOrUpdate($input )
     {
         if($input['id'] == null){
             $id = null;

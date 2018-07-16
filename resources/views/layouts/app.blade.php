@@ -10,19 +10,20 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    {{--<link href="{{ asset('css/app.css') }}" rel="stylesheet">--}}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/scroller/1.5.1/css/scroller.dataTables.min.css">
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -75,7 +76,15 @@
             @yield('content')
         </main>
     </div>
+    <!-- Scripts -->
+    {{--<script src="{{ asset('js/app.js') }}" defer></script>--}}
+    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
 
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/scroller/1.5.1/js/dataTables.scroller.min.js"></script>
     <script src="{{ asset('js/user.js') }}" ></script>
+
 </body>
 </html>

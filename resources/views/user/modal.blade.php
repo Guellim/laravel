@@ -1,13 +1,14 @@
 <!-- Modal (Pop up when detail button clicked) -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+
                 <h4 class="modal-title" id="myModalLabel">Task Editor</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{ route('register') }}" aria-label="{{ __('Register') }}" novalidate>
+                <form id="formAddUser" method="POST" action="{{ route('user.register') }}"  novalidate>
                     @csrf
 
                     <div class="form-group row">
@@ -65,7 +66,7 @@
                         <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('First name') }}</label>
 
                         <div class="col-md-6">
-                            <input id="name" type="text" class="form-control{{ $errors->has('firstName') ? ' is-invalid' : '' }}" name="firstName" value="{{ old('firstName') }}" required autofocus>
+                            <input id="firstName" type="text" class="form-control{{ $errors->has('firstName') ? ' is-invalid' : '' }}" name="firstName" value="{{ old('firstName') }}" required autofocus>
 
                             @if ($errors->has('firstName'))
                                 <span class="invalid-feedback" role="alert">
@@ -79,7 +80,7 @@
                         <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Last name') }}</label>
 
                         <div class="col-md-6">
-                            <input id="name" type="text" class="form-control{{ $errors->has('lastName') ? ' is-invalid' : '' }}" name="lastName" value="{{ old('lastName') }}" required autofocus>
+                            <input id="lastName" type="text" class="form-control{{ $errors->has('lastName') ? ' is-invalid' : '' }}" name="lastName" value="{{ old('lastName') }}" required autofocus>
 
                             @if ($errors->has('lastName'))
                                 <span class="invalid-feedback" role="alert">
@@ -93,7 +94,7 @@
                         <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Mobile') }}</label>
 
                         <div class="col-md-6">
-                            <input id="name" type="text" class="form-control{{ $errors->has('mobile') ? ' is-invalid' : '' }}" name="mobile" value="{{ old('mobile') }}" required autofocus>
+                            <input id="mobile" type="text" class="form-control{{ $errors->has('mobile') ? ' is-invalid' : '' }}" name="mobile" value="{{ old('mobile') }}" required autofocus>
 
                             @if ($errors->has('mobile'))
                                 <span class="invalid-feedback" role="alert">
@@ -107,7 +108,7 @@
                         <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Birthday') }}</label>
 
                         <div class="col-md-6">
-                            <input id="name" type="date" class="form-control{{ $errors->has('birthday') ? ' is-invalid' : '' }}" name="birthday" value="{{ old('birthday') }}" required autofocus>
+                            <input id="birthday" type="date" class="form-control{{ $errors->has('birthday') ? ' is-invalid' : '' }}" name="birthday" value="{{ old('birthday') }}" required autofocus>
 
                             @if ($errors->has('birthday'))
                                 <span class="invalid-feedback" role="alert">
@@ -150,21 +151,13 @@
                         @endif
                     </div>
 
-                    {{--***********************************************************--}}
 
-                    <div class="form-group row mb-0">
-                        <div class="col-md-6 offset-md-4">
-                            <button type="submit" class="btn btn-primary">
-                                {{ __('Register') }}
-                            </button>
-                        </div>
-                    </div>
-                </form>
+
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btn-save" value="add">Save changes</button>
-                <input type="hidden" id="task_id" name="task_id" value="0">
+                <input type="submit" class="btn btn-primary add" value="Add new user">
             </div>
+            </form>
         </div>
     </div>
 </div>

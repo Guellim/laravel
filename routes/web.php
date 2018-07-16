@@ -28,11 +28,9 @@ Route::middleware('admin')->group(function () {
 
 
 Route::get('/users', 'UserController@index')->name('index');
-
-Route::post('/user/store', [
-    'uses' => 'UserController@store',
-    'as' => 'store'
-]);
+Route::get('/users/getdata', 'UserController@getdata')->name('ajaxdata.getdata');
+Route::post('/user/register', 'UserController@store')->name('user.register');
+Route::post('/user/edit', 'UserController@update')->name('user.update');
 
 /*Route::patch('/user/{id}/update', [
     'uses' => 'UserController@postUpdateTask',

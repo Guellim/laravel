@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Repositories\UserRepository;
 use App\User;
 use Illuminate\Http\Request;
+use Datatables;
 
 class UserController extends Controller
 {
@@ -16,8 +17,15 @@ class UserController extends Controller
 
 
     public function index() {
-        $users = $this->repository->getAll();
-        return view('user.index', compact('users'));
+        //$users = $this->repository->getAll();
+        return view('user.index');
+    }
+
+    function getdata(Request $request)
+    {
+        $data = $request->all();
+        $users = $this->repository->getAll($data);
+        return response()->json($users);
     }
 
     public function show($id) {
@@ -43,7 +51,8 @@ class UserController extends Controller
         else {
             $user = $this->repository->createOrUpdate($request);
         }
-        return $user;
+        return response()->json($user);
+
     }
 
     public function destroy($id) {

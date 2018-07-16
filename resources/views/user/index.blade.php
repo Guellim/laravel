@@ -2,28 +2,30 @@
 
 @section('content')
     <div class="container">
-        <h2>Laravel Ajax ToDo App</h2>
-        <button name="btn-add" class="btn btn-primary btn-xs btn-add">User list</button>
+        <h2>Liste of users</h2>
+        <button name="btn-add" class="btn btn-primary btn-xs btn-add" data-toggle="modal" data-target="#addUser">Add new User</button>
+        <br>
+        <br>
         <div>
 
             <!-- Table-to-load-the-data Part -->
-            <table class="table">
+            <table id="user_table" class="table" data-url="{{ route('ajaxdata.getdata') }}">
                 <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>First name</th>
-                    <th>Last name</th>
-                    <th>Mobile</th>
-                    <th>Birthday</th>
-                    <th>Sexe</th>
-                    <th>Activation</th>
-                    <th>Role</th>
-                    <th>Actions</th>
-                </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Mobile</th>
+                        <th>Birthday</th>
+                        <th>Sexe</th>
+                        <th>Activation</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+                    </tr>
                 </thead>
-                <tbody id="tasks-list" name="tasks-list">
+                {{--<tbody id="tasks-list" name="tasks-list">
                 @foreach ($users as $user)
                     <tr id="task{{$user->id}}">
                         <td>{{$user->id}}</td>
@@ -42,10 +44,13 @@
                         </td>
                     </tr>
                 @endforeach
-                </tbody>
+                </tbody>--}}
             </table>
             <!-- End of Table-to-load-the-data Part -->
 
         </div>
+        @include('user.modal')
     </div>
+
+
 @endsection

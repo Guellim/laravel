@@ -63,8 +63,12 @@ class RegisterController extends Controller
         ]);
     }
 
+    /**
+     * @param $data array
+     * @return mixed
+     */
 
-    protected function create(array $data)
+    protected function create($data)
     {
         $user = new User();
         $user->fill($data);

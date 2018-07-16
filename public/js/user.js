@@ -1,104 +1,125 @@
 $(document).ready(function(){
 
-
-    //display modal form for task editing
-    $('.open-modal').click(function(){
-        var task_id = $(this).val();
-
-        $.get(url + '/' + task_id, function (data) {
-            //success data
-            console.log(data);
-            $('#task_id').val(data.id);
-            $('#task').val(data.task);
-            $('#description').val(data.description);
-            $('#btn-save').val("update");
-
-            $('#myModal').modal('show');
-        })
+    $('#addUser').on('shown.bs.modal', function () {
     });
-
-    //display modal form for creating new task
-    $('.btn-add').click(function(){
-        $('#btn-save').val("add");
-        $('#frmTasks').trigger("reset");
-        $('#myModal').modal('show');
+    ajaxLoad();
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
     });
+    $('#addUser form ').on('submit', function (event) {
 
-    //delete task and remove it from list
-    $('.delete-task').click(function(){
-        var task_id = $(this).val();
+        event.preventDefault();
+        var form = $(this);
+        var data = new FormData($(this)[0]);
+        console.log(data);
+
+        var url = form.attr("action");
+        console.log(url);
 
         $.ajax({
-
-            type: "DELETE",
-            url: url + '/' + task_id,
+            type: form.attr('method'),
+            url: url,
+            data: data,
+            dataType: 'json',
+            cache: false,
+            contentType: false,
+            processData: false,
             success: function (data) {
-                console.log(data);
+                $('.is-invalid').removeClass('is-invalid');
+                if (data.fail) {
+                    for (control in data.errors) {
+                        $('#' + control).addClass('is-invalid');
+                        $('#error-' + control).html(data.errors[control]);
+                    }
+                } else {
+                    $('#addUser').modal('toggle');
+                    $('#user_table').DataTable().ajax.reload();
 
-                $("#task" + task_id).remove();
+                }
             },
-            error: function (data) {
-                console.log('Error:', data);
+            error: function (xhr, textStatus, errorThrown) {
+                alert("Error: " + errorThrown);
             }
         });
+        // return false;
     });
 
-    //create new task / update existing task
-    $("#btn-save").click(function (e) {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-            }
-        })
 
+    function ajaxDelete(filename, token, content) {
+        content = typeof content !== 'undefined' ? content : 'content';
+        $('.loading').show();
+        $.ajax({
+            type: 'POST',
+            data: {_method: 'DELETE', _token: token},
+            url: filename,
+            success: function (data) {
+                $("#" + content).html(data);
+                $('.loading').hide();
+            },
+            error: function (xhr, status, error) {
+                alert(xhr.responseText);
+            }
+        });
+    }
+
+
+
+    $('#user_table').on('click', 'a.editor_edit', function (e) {
         e.preventDefault();
 
-        var formData = {
-            task: $('#task').val(),
-            description: $('#description').val(),
-        }
+         alert($(this).closest('tr').children('td'));
+    } );
 
-        //used to determine the http verb to use [add=POST], [update=PUT]
-        var state = $('#btn-save').val();
+    // Delete a record
+    $('#user_table').on('click', 'a.editor_remove', function (e) {
+        e.preventDefault();
 
-        var type = "POST"; //for creating new resource
-        var task_id = $('#task_id').val();;
-        var my_url = url;
+        editor.remove( $(this).closest('tr'), {
+            title: 'Delete record',
+            message: 'Are you sure you wish to remove this record?',
+            buttons: 'Delete'
+        } );
+    } );
+    function ajaxLoad(){
+    $('#user_table').DataTable({
 
-        if (state == "update"){
-            type = "PUT"; //for updating existing resource
-            my_url += '/' + task_id;
-        }
-
-        console.log(formData);
-
-        $.ajax({
-
-            type: type,
-            url: my_url,
-            data: formData,
-            dataType: 'json',
-            success: function (data) {
-                console.log(data);
-
-                var task = '<tr id="task' + data.id + '"><td>' + data.id + '</td><td>' + data.task + '</td><td>' + data.description + '</td><td>' + data.created_at + '</td>';
-                task += '<td><button class="btn btn-warning btn-xs btn-detail open-modal" value="' + data.id + '">Edit</button>';
-                task += '<button class="btn btn-danger btn-xs btn-delete delete-task" value="' + data.id + '">Delete</button></td></tr>';
-
-                if (state == "add"){ //if user added a new record
-                    $('#tasks-list').append(task);
-                }else{ //if user updated an existing record
-
-                    $("#task" + task_id).replaceWith( task );
-                }
-
-                $('#frmTasks').trigger("reset");
-
-                $('#myModal').modal('hide')
-            },
-            error: function (data) {
-                console.log('Error:', data);
+        "processing": true,
+        "serverSide": true,
+        ajax: {
+            url: $('#user_table').data( "url" ),
+        },
+        columns:[
+            { "data": "id" },
+            { "data": "name" },
+            { "data": "email" },
+            { "data": "firstName" },
+            { "data": "lastName" },
+            { "data": "mobile" },
+            { "data": "birthday" },
+            { "data": "gender" },
+            { "data": "activation" },
+            { "data": "role" },
+            {
+                data: null,
+                className: "center",
+                defaultContent: '<a href="" class="editor_edit">Edit</a> / <a href="" class="editor_remove">Delete</a>'
             }
-        });
+        ],
+        "createdRow": function ( row, data, index ) {
+            var result = "";
+            result += "<div class='datatable-action-buttons'><a  href='' data-id='"+data['id']+"' class='action-button btn btn-info btn-sm btn-info '><i class='fa fa-pencil-square' aria-hidden='true'></i> </a>";
+            result +="<a  class='detachDoctorBtn action-button btn btn-info btn-sm btn-danger '  data-id='"+data['id']+"' data-toggle='confirmation' data-btn-ok-label='Détacher' data-btn-ok-icon='fa fa-remove' data-btn-ok-class='btn btn-sm btn-danger' data-btn-cancel-label='Annuler' data-btn-cancel-icon='fa fa-chevron-circle-left' data-btn-cancel-class='btn btn-sm btn-default' data-title='Êtes-vous sûr de vouloir détacher ce médecin ?' data-placement='left' data-singleton='true'> <i class='fa fa-trash-o'></i></a>";
+            $('td', row).eq(10).empty().append(result);
+
+        },
+
+
     });
+    }
+
+
+
+
 });
